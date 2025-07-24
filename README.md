@@ -31,17 +31,28 @@ This project showcases a **serverless REST API** built using **Spring Boot 3 (Ja
 
 serverless-spring-api/
 ├── src/
+
 │   └── main/java/
+
 │       └── com/example/serverless/
+
 │           ├── handler/                # Function handlers (for Lambda)
+
 │           ├── model/                  # DTOs or request/response classes
+
 │           ├── service/                # Your business logic (optional)
+
 │           ├── config/                 # Any AWS client or Spring config
+
 │           └── ServerlessApplication.java  # Entry point (optional)
+
 │
 ├── pom.xml                     # Maven dependencies and build
+
 ├── template.yaml               # AWS SAM deployment template
+
 ├── README.md
+
 
 ---
 
