@@ -1,82 +1,124 @@
-# serverless-spring-api serverless API
-The serverless-spring-api project, created with [`aws-serverless-java-container`](https://github.com/aws/serverless-java-container).
+# 🌀 Serverless Spring Boot REST API (Java 21 + AWS Lambda + API Gateway)
 
-The starter project defines a simple `/ping` resource that can accept `GET` requests with its tests.
+A serverless REST API built using **Spring Boot 3** and deployed as an **AWS Lambda function** behind an **API Gateway**. This project demonstrates how to run a modern Spring Boot app in a fully serverless architecture without managing any servers.
 
-The project folder also includes a `template.yml` file. You can use this [SAM](https://github.com/awslabs/serverless-application-model) file to deploy the project to AWS Lambda and Amazon API Gateway or test in local with the [SAM CLI](https://github.com/awslabs/aws-sam-cli). 
+---
 
-## Pre-requisites
-* [AWS CLI](https://aws.amazon.com/cli/)
-* [SAM CLI](https://github.com/awslabs/aws-sam-cli)
-* [Gradle](https://gradle.org/) or [Maven](https://maven.apache.org/)
+## 🚀 Project Overview
 
-## Building the project
-You can use the SAM CLI to quickly build the project
-```bash
-$ mvn archetype:generate -DartifactId=serverless-spring-api -DarchetypeGroupId=com.amazonaws.serverless.archetypes -DarchetypeArtifactId=aws-serverless-jersey-archetype -DarchetypeVersion=2.1.4 -DgroupId=org.example -Dversion=1.0-SNAPSHOT -Dinteractive=false
-$ cd serverless-spring-api
-$ sam build
-Building resource 'ServerlessSpringApiFunction'
-Running JavaGradleWorkflow:GradleBuild
-Running JavaGradleWorkflow:CopyArtifacts
+This project adapts a Spring Boot 3 application using **Spring Cloud Function** so it can run inside AWS Lambda. The API is exposed to the internet via **API Gateway**, making it suitable for stateless, cost-efficient backend services.
 
-Build Succeeded
+---
 
-Built Artifacts  : .aws-sam/build
-Built Template   : .aws-sam/build/template.yaml
+## ⚙️ Tech Stack
 
-Commands you can use next
-=========================
-[*] Invoke Function: sam local invoke
-[*] Deploy: sam deploy --guided
-```
+- Java 21
+- Spring Boot 3
+- Spring Cloud Function
+- AWS Lambda
+- API Gateway
+- Maven
+- (Optional) AWS SAM for deployment
 
-## Testing locally with the SAM CLI
+---
 
-From the project root folder - where the `template.yml` file is located - start the API with the SAM CLI.
+## 🧠 How the Project Works
 
-```bash
-$ sam local start-api
+> A **client** (like a browser, Postman, or frontend app) sends HTTP requests to **API Gateway**, which forwards the request to an **AWS Lambda function** running the **Spring Boot** application. The function handles the request and sends back a response via API Gateway.
 
-...
-Mounting com.amazonaws.serverless.archetypes.StreamLambdaHandler::handleRequest (java11) at http://127.0.0.1:3000/{proxy+} [OPTIONS GET HEAD POST PUT DELETE PATCH]
-...
-```
-
-Using a new shell, you can send a test ping request to your API:
-
-```bash
-$ curl -s http://127.0.0.1:3000/ping | python -m json.tool
-
-{
-    "pong": "Hello, World!"
-}
-``` 
-
-## Deploying to AWS
-To deploy the application in your AWS account, you can use the SAM CLI's guided deployment process and follow the instructions on the screen
+### 🔄 Request Flow:
 
 ```
-$ sam deploy --guided
-```
 
-Once the deployment is completed, the SAM CLI will print out the stack's outputs, including the new application URL. You can use `curl` or a web browser to make a call to the URL
+Client → API Gateway → AWS Lambda (Spring Boot) → Response
 
-```
-...
--------------------------------------------------------------------------------------------------------------
-OutputKey-Description                        OutputValue
--------------------------------------------------------------------------------------------------------------
-ServerlessSpringApiApi - URL for application            https://xxxxxxxxxx.execute-api.us-west-2.amazonaws.com/Prod/pets
--------------------------------------------------------------------------------------------------------------
-```
+````
 
-Copy the `OutputValue` into a browser or use curl to test your first request:
+---
+
+## 📦 API Endpoints (Example)
+
+| Method | Endpoint         | Description               |
+|--------|------------------|---------------------------|
+| GET    | `/courses`       | Fetch list of courses     |
+| POST   | `/courses`       | Add a new course          |
+| PUT    | `/courses/{id}`  | Update a course by ID     |
+| DELETE | `/courses/{id}`  | Delete a course by ID     |
+
+
+
+---
+
+## 📁 Project Structure
 
 ```bash
-$ curl -s https://xxxxxxx.execute-api.us-west-2.amazonaws.com/Prod/ping | python -m json.tool
+serverless-spring-api/
+├── src/
+│   └── main/java/
+│       └── com/example/serverless/
+│           ├── handler/                # Lambda function handlers
+│           ├── model/                  # Data models (DTOs)
+│           ├── service/                # Business logic (optional)
+│           ├── config/                 # AWS-related config
+│           └── ServerlessApplication.java  # Spring Boot main class
+│
+├── pom.xml                   # Maven dependencies and build setup
+├── template.yaml             # AWS SAM template (if using SAM)
+├── README.md                 # Project documentation
+````
 
-{
-    "pong": "Hello, World!"
-}
+---
+
+## 🧪 Run Locally
+
+You can test the Spring Boot app locally (optional):
+
+```bash
+mvn spring-boot:run
 ```
+
+---
+
+## 🚀 Deployment Options
+
+### Option 1: Manual Upload via AWS Console
+
+1. Package the project:
+
+   ```bash
+   mvn clean package
+   ```
+2. Go to AWS Lambda console, create a new function (Java 21), and upload the JAR.
+3. Set the handler as:
+
+   ```
+   org.springframework.cloud.function.adapter.aws.FunctionInvoker::handleRequest
+   ```
+
+### Option 2: Deploy Using AWS SAM (Recommended)
+
+1. Install AWS CLI & AWS SAM CLI
+2. Build & deploy:
+
+   ```bash
+   sam build
+   sam deploy --guided
+   ```
+
+---
+
+## 📊 Logs & Monitoring
+
+Use AWS CloudWatch to view logs:
+
+```bash
+aws logs tail /aws/lambda/<your-function-name> --follow
+```
+
+---
+
+## 👨‍💻 Author
+
+**Nireeksh**
+Java Backend Developer | Cloud & DevOps Enthusiast
+[GitHub](https://github.com/nireekshshetty)
