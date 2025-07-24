@@ -20,7 +20,7 @@ public class CourseController {
 
     @PostMapping(produces = "application/json", consumes = "application/json")
     public ResponseEntity<Course> addCourse(@RequestBody Course course) {
-        courseService.addCourse(course);
+           courseService.addCourse(course);
         return new ResponseEntity<>(course, HttpStatus.CREATED);
     }
 
